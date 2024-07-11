@@ -18,14 +18,15 @@ const Content = ({ course }) => {
   );
 };
 
-const Course = ({ course }) => {
+const Course = (props) => {
+  const course = props.course;
+  const key = props.id;
   return (
-    <>
+    <div key={key}>
       <Header name={course.name} />
       <Content course={course} />
-    </>
+    </div>
   );
 };
-
 
 export default Course;

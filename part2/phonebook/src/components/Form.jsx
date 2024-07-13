@@ -1,12 +1,37 @@
-const Form = ({ newName, setNewName, newNumber, setNewNumber, persons, setPersons }) => {
+const Form = ({
+  newName,
+  setNewName,
+  newNumber,
+  setNewNumber,
+  persons,
+  setPersons,
+  personsService,
+}) => {
   const addPerson = (event) => {
     event.preventDefault();
     if (persons.some((person) => person.name === newName)) {
-      alert(`${newName} already entered`);
+      if (
+        !confirm(
+          `${newName} already exists. Replace the old number with a new one?`
+        )
+      )
+        return;
+      const id = persons.find((person) => person.name === newName).id;
+      const updatedPerson = { name: newName, number: newNumber };
+      personsService.update(id, updatedPerson).then(() => {
+        setPersons(
+          persons.map((person) => (person.id === id ? updatedPerson : person))
+        );
+        setNewName("");
+        setNewNumber("");
+      });
     } else {
-      setPersons(persons.concat({ name: newName, number: newNumber }));
-      setNewName("");
-      setNewNumber("");
+      const newPerson = { name: newName, number: newNumber };
+      personsService.create(newPerson).then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+        setNewName("");
+        setNewNumber("");
+      });
     }
   };
 

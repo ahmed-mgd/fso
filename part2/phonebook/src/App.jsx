@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Person from "./components/Person";
 import Filter from "./components/Filter";
 import Form from "./components/Form";
+import Notification from "./components/Notification";
 import personsService from "./services/persons";
 
 const App = () => {
@@ -9,6 +10,8 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
+  const [notification, setNotification] = useState(null);
+  const [notifClass, setNotifClass] = useState("success");
 
   useEffect(() => {
     personsService
@@ -31,15 +34,18 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification} notifClass={notifClass} />
       <Filter filter={filter} onChange={(event) => handleFilterChange(event)} />
       <h2>Add a new</h2>
       <Form
         newName={newName}
-        setNewName={setNewName}
         newNumber={newNumber}
-        setNewNumber={setNewNumber}
         persons={persons}
+        setNewName={setNewName}
+        setNewNumber={setNewNumber}
         setPersons={setPersons}
+        setNotifClass={setNotifClass}
+        setNotification={setNotification}
         personsService={personsService}
       />
       <h2>Numbers</h2>

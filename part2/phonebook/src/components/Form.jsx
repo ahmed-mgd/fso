@@ -5,8 +5,26 @@ const Form = ({
   setNewNumber,
   persons,
   setPersons,
+  setNotifClass,
+  setNotification,
   personsService,
 }) => {
+  const notifySuccess = (message) => {
+    setNotifClass("success");
+    setNotification(message);
+    setTimeout(() => {
+      setNotification(null);
+    }, 5000);
+  };
+
+  const notifyError = (message) => {
+    setNotifClass("error");
+    setNotification(message);
+    setTimeout(() => {
+      setNotification(null);
+    }, 5000);
+  };
+
   const addPerson = (event) => {
     event.preventDefault();
     if (persons.some((person) => person.name === newName)) {
@@ -24,14 +42,22 @@ const Form = ({
         );
         setNewName("");
         setNewNumber("");
+        notifySuccess(`${updatedPerson.name} successfully updated!`);
       });
     } else {
       const newPerson = { name: newName, number: newNumber };
-      personsService.create(newPerson).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson));
-        setNewName("");
-        setNewNumber("");
-      });
+      personsService
+        .create(newPerson)
+        .then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson));
+          setNewName("");
+          setNewNumber("");
+          notifySuccess(`${newPerson.name} successfully added!`);
+        })
+        .catch((error) => {
+          console.log(error);
+          notifyError(`Information for ${newPerson.name} has been deleted.`);
+        });
     }
   };
 

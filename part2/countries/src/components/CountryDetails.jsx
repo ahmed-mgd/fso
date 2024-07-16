@@ -1,4 +1,24 @@
-const CountryDetails = ({ country }) => {
+import { useState, useEffect } from "react";
+import axios from "axios";
+
+const CountryDetails = ({ country, query }) => {
+  const [temp, setTemp] = useState(null);
+  const [condition, setCondition] = useState(null);
+  const [wind, setWind] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get(
+        `http://api.weatherapi.com/v1/current.json?key=05e5e7a67d664fe6bcf202205242806&q=${country.name.common}`
+      )
+      .then((response) => {
+        const current = response.data.current;
+        setTemp(current.temp_c);
+        setCondition(current.condition.icon);
+        setWind(current.wind_kph);
+      });
+  }, [query, country.name.common]);
+
   return (
     <>
       <h1>{country.name.common}</h1>
@@ -13,7 +33,10 @@ const CountryDetails = ({ country }) => {
       </ul>
       <img src={country.flags.png} alt="" />
       <br />
-      <h3>Weather:</h3>
+      <h3>Weather in {country.capital[0]}:</h3>
+      <p>{temp}&deg;C</p>
+      <img src={condition} alt="Condition Icon" />
+      <p>Wind: {wind}kph</p>
     </>
   );
 };

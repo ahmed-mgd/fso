@@ -27,7 +27,7 @@ const App = () => {
     } else if (countries.length > 1) {
       return <CountryList countries={countries} setQuery={setQuery} />;
     } else if (countries.length === 1) {
-      return <CountryDetails country={countries[0]} />;
+      return <CountryDetails country={countries[0]} query={query} useEffect={useEffect} axios={axios} />;
     } else {
       return <>No matches, specify another filter</>;
     }

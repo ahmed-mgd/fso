@@ -22,13 +22,12 @@ const App = () => {
   }, [query]);
 
   const renderCountries = () => {
-    console.log(countries);
     if (countries.length > 10) {
       return <>Too many matches, specify another filter</>;
     } else if (countries.length > 1) {
-      return <CountryList countries={countries} />;
+      return <CountryList countries={countries} setQuery={setQuery} />;
     } else if (countries.length === 1) {
-      return <CountryDetails country={countries[0]} setQuery={setQuery} />;
+      return <CountryDetails country={countries[0]} />;
     } else {
       return <>No matches, specify another filter</>;
     }

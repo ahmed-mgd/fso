@@ -12,6 +12,8 @@ const CountryDetails = ({ country }) => {
         ))}
       </ul>
       <img src={country.flags.png} alt="" />
+      <br />
+      <h3>Weather:</h3>
     </>
   );
 };

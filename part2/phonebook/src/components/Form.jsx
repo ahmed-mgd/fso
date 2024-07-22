@@ -36,14 +36,20 @@ const Form = ({
         return;
       const id = persons.find((person) => person.name === newName).id;
       const updatedPerson = { name: newName, number: newNumber };
-      personsService.update(id, updatedPerson).then(() => {
-        setPersons(
-          persons.map((person) => (person.id === id ? updatedPerson : person))
-        );
-        setNewName("");
-        setNewNumber("");
-        notifySuccess(`${updatedPerson.name} successfully updated!`);
-      });
+      personsService
+        .update(id, updatedPerson)
+        .then(() => {
+          setPersons(
+            persons.map((person) => (person.id === id ? updatedPerson : person))
+          );
+          setNewName("");
+          setNewNumber("");
+          notifySuccess(`${updatedPerson.name} successfully updated!`);
+        })
+        .catch((error) => {
+          console.log(error.response.data.error);
+          notifyError(error.response.data.error);
+        });
     } else {
       const newPerson = { name: newName, number: newNumber };
       personsService
@@ -55,8 +61,8 @@ const Form = ({
           notifySuccess(`${newPerson.name} successfully added!`);
         })
         .catch((error) => {
-          console.log(error);
-          notifyError(`Information for ${newPerson.name} has been deleted.`);
+          console.log(error.response.data.error);
+          notifyError(error.response.data.error);
         });
     }
   };

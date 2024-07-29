@@ -1,0 +1,9 @@
+node_modules
+dist
+fly.toml
+Dockerfile
+.dockerignore
+build/
+.env
+
+.prettierrc

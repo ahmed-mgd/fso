@@ -7,10 +7,19 @@ const totalLikes = (blogs) => {
 }
 
 const favoriteBlog = (blogs) => {
-  return blogs.reduce((max, current) => current.likes > max.likes ? current : max, blogs.length > 0 ? blogs[0] : {})
+  const blog = blogs.reduce(
+    (max, current) => (current.likes > max.likes ? current : max),
+    blogs.length > 0 ? blogs[0] : {}
+  )
+  const blogCopy = JSON.parse(JSON.stringify(blog))
+  delete blogCopy._id
+  delete blogCopy.__v
+  delete blogCopy.url
+  return blogCopy
 }
 
 module.exports = {
   dummy,
   totalLikes,
+  favoriteBlog,
 }
